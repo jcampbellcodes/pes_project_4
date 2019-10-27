@@ -21,17 +21,20 @@
 
 void initialize()
 {
+
+  	/* Init board hardware. */
+    BOARD_InitBootPins();
+    BOARD_InitBootClocks();
+    BOARD_InitBootPeripherals();
+
 #ifdef DEBUG
 	/* serial debug console setup: use PRINTF("debug msg"); */
 	BOARD_InitDebugConsole();
-	log_enable();
-	log_string("\nprogram start\n");
+	log_enable(LOG_SEVERITY_DEBUG);
+	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "\nprogram start\n");
+#else
+	log_enable(SEVERITY_STATUS);
 #endif
-
-    /* Board pin, clock, debug console init */
-	BOARD_InitBootPins();
-	BOARD_InitBootClocks();
-	BOARD_InitBootPeripherals();
 
 	/* led setup */
 	LED_RED_INIT(1);
@@ -53,6 +56,6 @@ void initialize()
 void terminate()
 {
 #ifdef DEBUG
-	log_string("\nprogram end\n");
+	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "\nprogram end\n");
 #endif
 }

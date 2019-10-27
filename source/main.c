@@ -39,32 +39,20 @@
 #include "clock_config.h"
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
-/* TODO: insert other include files here. */
 
-/* TODO: insert other definitions and declarations here. */
+#include "handle_led.h"
+#include "setup_teardown.h"
+#include "logger.h"
 
 /*
  * @brief   Application entry point.
  */
 int main(void) {
 
-  	/* Init board hardware. */
-    BOARD_InitBootPins();
-    BOARD_InitBootClocks();
-    BOARD_InitBootPeripherals();
-  	/* Init FSL debug console. */
-    BOARD_InitDebugConsole();
+	initialize();
+    set_led(1, GREEN);
 
-    PRINTF("Hello World\n");
+    LOG_STRING_ARGS(LOG_MODULE_MAIN , LOG_SEVERITY_DEBUG, "\n%d, %d, %d, %s\n", 1, 2, 3, "GO!");
 
-    /* Force the counter to be placed into memory. */
-    volatile static int i = 0 ;
-    /* Enter an infinite loop, just incrementing a counter. */
-    while(1) {
-        i++ ;
-        /* 'Dummy' NOP to allow source level single stepping of
-            tight while() loop */
-        __asm volatile ("nop");
-    }
     return 0 ;
 }

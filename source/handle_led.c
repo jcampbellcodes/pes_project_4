@@ -18,6 +18,7 @@
 #include "fsl_debug_console.h"
 #include "fsl_gpio.h"
 #include "MKL25Z4.h"
+#include "logger.h"
 
 /**
  * set_led
@@ -30,10 +31,10 @@
  */
 void set_led(uint8_t inValue, enum COLOR inColor)
 {
-#ifdef DEBUG
-	//GPIO_TogglePinsOutput(GPIOD, 1U << 7U);
-	PRINTF("\nLED %s %s", COLOR_STRINGS[inColor], inValue ? "ON" : "OFF");
-#endif
+	LOG_STRING_ARGS(LOG_MODULE_LED,
+			LOG_SEVERITY_DEBUG,
+			"\nLED %s %s", COLOR_STRINGS[inColor],
+			inValue ? "ON" : "OFF");
 
 	switch(inColor)
 	{
