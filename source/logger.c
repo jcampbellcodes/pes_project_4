@@ -25,25 +25,25 @@
 #include "fsl_debug_console.h"
 
 #define PRINT_LOG_PREFIX(module, func, severity)\
-	PRINTF("\n%s -> %s::[%s] : ",  sLogSeverityStrings[severity] , sLogModuleStrings[module], func );
+	PRINTF("\n\n%s -> %s::[%s] : ",  sLogSeverityStrings[severity] , sLogModuleStrings[module], func );
 
 static const char* sLogSeverityStrings[NUM_LOG_SEVERITIES] =
 {
-	"LOG_SEVERITY_TEST",
-	"LOG_SEVERITY_DEBUG",
-	"LOG_SEVERITY_STATUS"
+	"TEST",
+	"DEBUG",
+	"STATUS"
 };
 
 static const char* sLogModuleStrings[NUM_LOG_MODULES] =
 {
-	"LOG_MODULE_MAIN",
-	"LOG_MODULE_LED",
-	"LOG_MODULE_UNIT_TEST",
-	"LOG_MODULE_SETUP_TEARDOWN",
-	"LOG_MODULE_STATE_MACHINE_STATE",
-	"LOG_MODULE_STATE_MACHINE_TABLE",
-	"LOG_MODULE_TMP102",
-	"LOG_MODULE_I2C"
+	"MAIN",
+	"LED",
+	"UNIT_TEST",
+	"SETUP_TEARDOWN",
+	"STATE_MACHINE_STATE",
+	"STATE_MACHINE_TABLE",
+	"TMP102",
+	"I2C"
 };
 
 /**
@@ -89,16 +89,16 @@ void log_data(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeve
 	if (sLoggingEnabled && inSeverity <= sLogSeverity)
 	{
 		PRINT_LOG_PREFIX(inModule, inFuncName, inSeverity)
-		PRINTF("\nBytes at address %p:\n==========================\n", inBytes);
+		PRINTF("\n\rBytes at address %p:\n\r==========================\n\r", inBytes);
 		for(int i = 0; i < inSize; i++)
 		{
 			PRINTF("%2x ", inBytes[i]);
 			if((i+1)%4 == 0)
 			{
-				PRINTF("\n");
+				PRINTF("\r\n");
 			}
 		}
-		printf("\n==========================\n");
+		printf("\n\r==========================\n\r");
 	}
 }
 
@@ -118,7 +118,7 @@ void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSe
 	    vsprintf(format_buf, inString, argp);
 	    va_end(argp);
 	    PRINT_LOG_PREFIX(inModule, inFuncName, inSeverity)
-		PRINTF("%s\n", format_buf);
+		PRINTF("%s\n\r", format_buf);
 	}
 }
 
@@ -131,6 +131,6 @@ void log_integer(LogModule_t inModule, const char* inFuncName, LogSeverity_t inS
 	if (sLoggingEnabled && inSeverity <= sLogSeverity)
 	{
 		PRINT_LOG_PREFIX(inModule, inFuncName, inSeverity)
-		PRINTF("%llu\n", inNum);
+		PRINTF("%llu\n\r", inNum);
 	}
 }

@@ -31,7 +31,7 @@ void initialize()
 	/* serial debug console setup: use PRINTF("debug msg"); */
 	BOARD_InitDebugConsole();
 	log_enable(LOG_SEVERITY_DEBUG);
-	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "\nprogram start\n");
+	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "program start");
 #else
 	log_enable(SEVERITY_STATUS);
 #endif
@@ -56,6 +56,6 @@ void initialize()
 void terminate()
 {
 #ifdef DEBUG
-	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "\nprogram end\n");
+	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "program end");
 #endif
 }

@@ -263,7 +263,7 @@ static int ucunit_index = 0; /* Tracepoint index */
         UCUNIT_WriteString(msg);                                \
         UCUNIT_WriteString("(");                                \
         UCUNIT_WriteString(args);                               \
-        UCUNIT_WriteString(")\n");                              \
+        UCUNIT_WriteString(")\n\r");                              \
     } while(0)
 #else
 #define UCUNIT_WritePassedMsg(msg, args)
@@ -296,7 +296,7 @@ static int ucunit_index = 0; /* Tracepoint index */
         UCUNIT_WriteString(msg);                                \
         UCUNIT_WriteString("(");                                \
         UCUNIT_WriteString(args);                               \
-        UCUNIT_WriteString(")\n");                              \
+        UCUNIT_WriteString(")\n\r");                              \
     } while(0)
 #endif
 
@@ -560,9 +560,9 @@ static int ucunit_index = 0; /* Tracepoint index */
 #define UCUNIT_TestcaseBegin(name)                                        \
     do                                                                    \
     {                                                                     \
-        UCUNIT_WriteString("\n======================================\n"); \
+        UCUNIT_WriteString("\n\r======================================\n\r"); \
         UCUNIT_WriteString(name);                                         \
-        UCUNIT_WriteString("\n======================================\n"); \
+        UCUNIT_WriteString("\n\r======================================\n\r"); \
         ucunit_testcases_failed_checks = ucunit_checks_failed;            \
     }                                                                     \
     while(0)
@@ -579,10 +579,10 @@ static int ucunit_index = 0; /* Tracepoint index */
 #define UCUNIT_TestcaseEnd()                                         \
     do                                                               \
     {                                                                \
-        UCUNIT_WriteString("======================================\n");  \
+        UCUNIT_WriteString("======================================\n\r");  \
         if( 0==(ucunit_testcases_failed_checks - ucunit_checks_failed) ) \
         {                                                            \
-            UCUNIT_WriteString("Testcase passed.\n");                \
+            UCUNIT_WriteString("Testcase passed.\n\r");                \
             ucunit_testcases_passed++;                               \
         }                                                            \
         else                                                         \
@@ -590,7 +590,7 @@ static int ucunit_index = 0; /* Tracepoint index */
             UCUNIT_WriteFailedMsg("EndTestcase","");                 \
             ucunit_testcases_failed++;                               \
         }                                                            \
-        UCUNIT_WriteString("======================================\n"); \
+        UCUNIT_WriteString("======================================\n\r"); \
     }                                                                \
     while(0)
 
@@ -666,16 +666,16 @@ static int ucunit_index = 0; /* Tracepoint index */
  */
 #define UCUNIT_WriteSummary()                                         \
 {                                                                     \
-    UCUNIT_WriteString("\n**************************************");   \
-    UCUNIT_WriteString("\nTestcases: failed: ");                      \
+    UCUNIT_WriteString("\n\r**************************************");   \
+    UCUNIT_WriteString("\n\rTestcases: failed: ");                      \
     UCUNIT_WriteInt(ucunit_testcases_failed);                         \
-    UCUNIT_WriteString("\n           passed: ");                      \
+    UCUNIT_WriteString("\n\r           passed: ");                      \
     UCUNIT_WriteInt(ucunit_testcases_passed);                         \
-    UCUNIT_WriteString("\nChecks:    failed: ");                      \
+    UCUNIT_WriteString("\n\rChecks:    failed: ");                      \
     UCUNIT_WriteInt(ucunit_checks_failed);                            \
-    UCUNIT_WriteString("\n           passed: ");                      \
+    UCUNIT_WriteString("\n\r           passed: ");                      \
     UCUNIT_WriteInt(ucunit_checks_passed);                            \
-    UCUNIT_WriteString("\n**************************************\n"); \
+    UCUNIT_WriteString("\n\r**************************************\n\r"); \
 }
 
 #endif /*UCUNIT_H_*/
