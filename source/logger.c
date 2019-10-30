@@ -86,7 +86,7 @@ bool log_enabled()
  */
 void log_data(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, const uint8_t* inBytes, size_t inSize)
 {
-	if (sLoggingEnabled && inSeverity <= sLogSeverity)
+	if (sLoggingEnabled && inSeverity >= sLogSeverity)
 	{
 		PRINT_LOG_PREFIX(inModule, inFuncName, inSeverity)
 		PRINTF("\n\rBytes at address %p:\n\r==========================\n\r", inBytes);
@@ -111,7 +111,7 @@ void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSe
 	// TODO: no magic numbers
 	static char format_buf[2048] = {0};
 
-	if (sLoggingEnabled && inSeverity <= sLogSeverity) {
+	if (sLoggingEnabled && inSeverity >= sLogSeverity) {
 
 	    va_list argp;
 	    va_start(argp, inString);
@@ -128,7 +128,7 @@ void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSe
  */
 void log_integer(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, uint64_t inNum)
 {
-	if (sLoggingEnabled && inSeverity <= sLogSeverity)
+	if (sLoggingEnabled && inSeverity >= sLogSeverity)
 	{
 		PRINT_LOG_PREFIX(inModule, inFuncName, inSeverity)
 		PRINTF("%llu\n\r", inNum);

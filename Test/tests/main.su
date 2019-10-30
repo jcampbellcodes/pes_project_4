@@ -1,3 +1,1 @@
-state_machine.h:37:6:handle_event_state	16	static
-state_machine.h:134:6:handle_event_table	16	static
-main.c:10:5:main	96	static
+main.c:10:5:main	168	static

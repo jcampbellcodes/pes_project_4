@@ -8,21 +8,24 @@ C_SRCS += \
 ../source/logger.c \
 ../source/mtb.c \
 ../source/semihost_hardfault.c \
-../source/setup_teardown.c 
+../source/setup_teardown.c \
+../source/state_machine.c 
 
 OBJS += \
 ./source/handle_led.o \
 ./source/logger.o \
 ./source/mtb.o \
 ./source/semihost_hardfault.o \
-./source/setup_teardown.o 
+./source/setup_teardown.o \
+./source/state_machine.o 
 
 C_DEPS += \
 ./source/handle_led.d \
 ./source/logger.d \
 ./source/mtb.d \
 ./source/semihost_hardfault.d \
-./source/setup_teardown.d 
+./source/setup_teardown.d \
+./source/state_machine.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

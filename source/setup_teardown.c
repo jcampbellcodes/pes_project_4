@@ -30,7 +30,7 @@ void initialize()
 #ifdef DEBUG
 	/* serial debug console setup: use PRINTF("debug msg"); */
 	BOARD_InitDebugConsole();
-	log_enable(LOG_SEVERITY_DEBUG);
+	log_enable(LOG_SEVERITY_TEST);
 	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "program start");
 #else
 	log_enable(SEVERITY_STATUS);

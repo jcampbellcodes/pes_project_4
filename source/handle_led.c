@@ -32,7 +32,7 @@
 void set_led(uint8_t inValue, enum COLOR inColor)
 {
 	LOG_STRING_ARGS(LOG_MODULE_LED,
-			LOG_SEVERITY_DEBUG,
+			LOG_SEVERITY_TEST,
 			"LED %s %s", COLOR_STRINGS[inColor],
 			inValue ? "ON" : "OFF");
 
