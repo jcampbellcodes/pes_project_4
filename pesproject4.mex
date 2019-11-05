@@ -38,6 +38,11 @@
                         <data>true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="Peripheral" resourceId="I2C1" description="Peripheral I2C1 is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
                      <feature name="enabled" evaluation="equal" configuration="core0">
                         <data>true</data>
@@ -55,6 +60,8 @@
                   <pin peripheral="GPIOD" signal="GPIO, 1" pin_num="74" pin_signal="ADC0_SE5b/PTD1/SPI0_SCK/TPM0_CH1"/>
                   <pin peripheral="GPIOB" signal="GPIO, 18" pin_num="53" pin_signal="TSI0_CH11/PTB18/TPM2_CH0"/>
                   <pin peripheral="GPIOB" signal="GPIO, 19" pin_num="54" pin_signal="TSI0_CH12/PTB19/TPM2_CH1"/>
+                  <pin peripheral="I2C1" signal="SCL" pin_num="2" pin_signal="PTE1/SPI1_MOSI/UART1_RX/SPI1_MISO/I2C1_SCL"/>
+                  <pin peripheral="I2C1" signal="SDA" pin_num="1" pin_signal="PTE0/UART1_TX/RTC_CLKOUT/CMP0_OUT/I2C1_SDA"/>
                </pins>
             </function>
          </functions_list>
@@ -124,6 +131,8 @@
                   <setting id="MCG_C2_OSC_MODE_CFG" value="ModeOscLowPower" locked="false"/>
                   <setting id="MCG_C2_RANGE0_CFG" value="High" locked="false"/>
                   <setting id="MCG_C2_RANGE0_FRDIV_CFG" value="High" locked="false"/>
+                  <setting id="MCG_C5_PLLCLKEN0_CFG" value="Enabled" locked="false"/>
+                  <setting id="MCG_CG_PLLSTEN0_CFG" value="Enabled" locked="false"/>
                   <setting id="OSC0_CR_ERCLKEN_CFG" value="Enabled" locked="false"/>
                   <setting id="OSC_CR_ERCLKEN_CFG" value="Enabled" locked="false"/>
                   <setting id="SIM.CLKOUTSEL.sel" value="SIM.OUTDIV4" locked="false"/>

@@ -1,6 +1,6 @@
 /*
  * @file handle_led.c
- * @brief Project 3
+ * @brief Project 4
  *
  * Functions for handling the state of an LED.
  *

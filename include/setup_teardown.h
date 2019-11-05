@@ -1,6 +1,6 @@
 /*
  * @file setup_teardown.h
- * @brief Project 3
+ * @brief Project 4
  *
  * @details Contains the setup and cleanup prototypes to be implemented
  *          both for the FB and PC variants of the build.
@@ -13,8 +13,8 @@
  *         ARM Debugger: GNU gdb 8.2.50.20181213-git
  */
 
-#ifndef PES_PROJECT_2_SETUP_TEARDOWN_H
-#define PES_PROJECT_2_SETUP_TEARDOWN_H
+#ifndef PES_PROJECT_4_SETUP_TEARDOWN_H
+#define PES_PROJECT_4_SETUP_TEARDOWN_H
 
 /**
  * initialize

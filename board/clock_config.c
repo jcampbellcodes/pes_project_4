@@ -114,6 +114,8 @@ settings:
 - {id: MCG_C2_OSC_MODE_CFG, value: ModeOscLowPower}
 - {id: MCG_C2_RANGE0_CFG, value: High}
 - {id: MCG_C2_RANGE0_FRDIV_CFG, value: High}
+- {id: MCG_C5_PLLCLKEN0_CFG, value: Enabled}
+- {id: MCG_CG_PLLSTEN0_CFG, value: Enabled}
 - {id: OSC0_CR_ERCLKEN_CFG, value: Enabled}
 - {id: OSC_CR_ERCLKEN_CFG, value: Enabled}
 - {id: SIM.CLKOUTSEL.sel, value: SIM.OUTDIV4}
@@ -142,7 +144,7 @@ const mcg_config_t mcgConfig_BOARD_BootClockRUN =
         .dmx32 = kMCG_Dmx32Default,               /* DCO has a default range of 25% */
         .pll0Config =
             {
-                .enableMode = MCG_PLL_DISABLE,    /* MCGPLLCLK disabled */
+                .enableMode = kMCG_PllEnableIndependent | kMCG_PllEnableInStop,/* MCGPLLCLK enabled independently of MCG clock mode as well as in STOP mode */
                 .prdiv = 0x1U,                    /* PLL Reference divider: divided by 2 */
                 .vdiv = 0x0U,                     /* VCO divider: multiplied by 24 */
             },

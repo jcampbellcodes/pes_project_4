@@ -1,8 +1,8 @@
 /*
- * @file mem_types.h
- * @brief Project 3
+ * @file post.h
+ * @brief Project 4
  *
- * Defines to be used by memory functions.
+ * A power on self test.
  *
  * @author Jack Campbell
  * @tools  PC Compiler: GNU gcc 8.3.0
@@ -13,17 +13,15 @@
  *         ARM Debugger: GNU gdb 8.2.50.20181213-git
  */
 
-#ifndef INCLUDE_MEM_TYPES_H_
-#define INCLUDE_MEM_TYPES_H_
+#ifndef POSTH
+#define POSTH
+
+#include <stdbool.h>
 
 /**
- * @brief Return code for memory functions.
+ * @brief Power on self test that checks for connection with TMP102.
+ * @return Whether the test succeeded.
  */
-typedef enum mem_status
-{
-	SUCCESS = 0,
-	FAILED
-} mem_status;
+bool power_on_self_test();
 
-
-#endif /* INCLUDE_MEM_TYPES_H_ */
+#endif

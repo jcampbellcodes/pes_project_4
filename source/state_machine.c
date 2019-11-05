@@ -1,10 +1,26 @@
+/*
+ * @file state_machine.h
+ * @brief Project 4
+ *
+ * @details Contains both a table and state based state machine.
+ *
+ * @tools  PC Compiler: GNU gcc 8.3.0
+ *         PC Linker: GNU ld 2.32
+ *         PC Debugger: GNU gdb 8.2.91.20190405-git
+ *         ARM Compiler: GNU gcc version 8.2.1 20181213
+ *         ARM Linker: GNU ld 2.31.51.20181213
+ *         ARM Debugger: GNU gdb 8.2.50.20181213-git
+ */
+
 #include "logger.h"
 #include "state_machine.h"
+#include "handle_led.h"
 
 #define MAX_TIMEOUTS 4
 
 void read_temp()
 {
+	set_led(1, GREEN);
 	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "Reading TMP102 over I2C" );
 }
 
@@ -19,12 +35,14 @@ void average_wait()
 	 *
 	 * disable all interrupts (alert) whilst in this state
 	 */
+	set_led(1, GREEN);
 	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "Using last read temp to calculate an average." );
 	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "Wait 15 seconds." );
 }
 
 void temp_alert()
 {
+	set_led(1, BLUE);
 	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "ALERT Temp value was negative." );
 	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "Reading TMP102 over I2C" );
 }

@@ -1,6 +1,6 @@
 /*
  * @file handle_led.h
- * @brief Project 3
+ * @brief Project 4
  *
  * @details Contains the prototype for handling LEDs on various platforms.
  *          This may be actually turning an LED on and off or just printing
@@ -14,8 +14,8 @@
  *         ARM Linker: GNU ld 2.31.51.20181213
  *         ARM Debugger: GNU gdb 8.2.50.20181213-git
  */
-#ifndef PES_PROJECT_2_HANDLE_LED_H
-#define PES_PROJECT_2_HANDLE_LED_H
+#ifndef PES_PROJECT_4_HANDLE_LED_H
+#define PES_PROJECT_4_HANDLE_LED_H
 
 #include <stdint.h>
 #include "led_types.h"

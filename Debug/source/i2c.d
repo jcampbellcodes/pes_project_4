@@ -1,0 +1,20 @@
+source/i2c.o source/i2c.d: ../source/i2c.c ../include/i2c.h \
+ ../CMSIS/MKL25Z4.h ../CMSIS/core_cm0plus.h ../CMSIS/core_cmInstr.h \
+ ../CMSIS/cmsis_gcc.h ../CMSIS/core_cmFunc.h ../CMSIS/system_MKL25Z4.h \
+ ../include/logger.h
+
+../include/i2c.h:
+
+../CMSIS/MKL25Z4.h:
+
+../CMSIS/core_cm0plus.h:
+
+../CMSIS/core_cmInstr.h:
+
+../CMSIS/cmsis_gcc.h:
+
+../CMSIS/core_cmFunc.h:
+
+../CMSIS/system_MKL25Z4.h:
+
+../include/logger.h:

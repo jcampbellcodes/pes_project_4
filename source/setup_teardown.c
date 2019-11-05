@@ -1,6 +1,6 @@
 /*
  * @file setup_teardown.h
- * @brief Project 3
+ * @brief Project 4
  *
  * @details Contains the setup and cleanup prototypes.
  *
@@ -16,8 +16,10 @@
 #include "peripherals.h"
 #include "clock_config.h"
 #include "pin_mux.h"
-
+#include "post.h"
 #include "logger.h"
+#include "stdlib.h"
+#include "i2c.h"
 
 void initialize()
 {
@@ -44,6 +46,11 @@ void initialize()
 	LED_BLUE_OFF();
 	LED_GREEN_OFF();
 	LED_RED_OFF();
+
+	i2c_init();
+
+	if(!power_on_self_test())
+		exit(1);
 }
 
 /**

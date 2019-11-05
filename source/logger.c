@@ -1,6 +1,6 @@
 /*
  * @file logger.h
- * @brief Project 3
+ * @brief Project 5
  *
  * Tools for logging.
  *
@@ -24,9 +24,15 @@
 
 #include "fsl_debug_console.h"
 
+/**
+ * @brief Used to standardize the prefix before log messages.
+ */
 #define PRINT_LOG_PREFIX(module, func, severity)\
 	PRINTF("\n\n%s -> %s::[%s] : ",  sLogSeverityStrings[severity] , sLogModuleStrings[module], func );
 
+/**
+ * @brief Strings associated with severities.
+ */
 static const char* sLogSeverityStrings[NUM_LOG_SEVERITIES] =
 {
 	"TEST",
@@ -34,6 +40,9 @@ static const char* sLogSeverityStrings[NUM_LOG_SEVERITIES] =
 	"STATUS"
 };
 
+/**
+ * @brief Strings associated with modules.
+ */
 static const char* sLogModuleStrings[NUM_LOG_MODULES] =
 {
 	"MAIN",
@@ -42,6 +51,7 @@ static const char* sLogModuleStrings[NUM_LOG_MODULES] =
 	"SETUP_TEARDOWN",
 	"STATE_MACHINE_STATE",
 	"STATE_MACHINE_TABLE",
+	"POST",
 	"TMP102",
 	"I2C"
 };
@@ -51,39 +61,27 @@ static const char* sLogModuleStrings[NUM_LOG_MODULES] =
  */
 static bool sLoggingEnabled = false;
 
+/**
+ * @brief Static severity maintains the severity for the module.
+ */
 static LogSeverity_t sLogSeverity = LOG_SEVERITY_STATUS;
 
-/**
- * @brief Log_enable – begin printing log messages when called
- */
 void log_enable(LogSeverity_t inSeverity)
 {
 	sLoggingEnabled = true;
 	sLogSeverity = inSeverity;
 }
 
-/**
- * @brief Log_disable – ignore any log messages until re-enabled
- */
 void log_disable()
 {
 	sLoggingEnabled = false;
 }
 
-/**
- * @brief Log_status – returns a flag to indicate whether the logger is enabled or disabled
- * @return Whether the log is currently enabled.
- */
 bool log_enabled()
 {
 	return sLoggingEnabled;
 }
 
-/**
- * @brief Log_data – display in hexadecimal an address and contents of a memory location,
- * @param inBytes a pointer to a sequence of bytes to log
- * @param inSize Number of bytes to log
- */
 void log_data(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, const uint8_t* inBytes, size_t inSize)
 {
 	if (sLoggingEnabled && inSeverity >= sLogSeverity)
@@ -102,10 +100,7 @@ void log_data(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeve
 	}
 }
 
-/**
- * @brief Display a string.
- * @param inString String to display.
- */
+
 void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, const char* inString, ...)
 {
 	// TODO: no magic numbers
@@ -122,10 +117,7 @@ void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSe
 	}
 }
 
-/**
- * @brief Display an integer
- * @param inNum Integer to display.
- */
+
 void log_integer(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, uint64_t inNum)
 {
 	if (sLoggingEnabled && inSeverity >= sLogSeverity)

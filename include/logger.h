@@ -1,6 +1,6 @@
 /*
  * @file logger.h
- * @brief Project 3
+ * @brief Project 4
  *
  * Interface to use for logging on either PC or KL25Z.
  *
@@ -20,6 +20,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+/**
+ * @brief The category in which log messages should appear.
+ */
 typedef enum LogSeverity
 {
 	LOG_SEVERITY_TEST,
@@ -28,6 +31,9 @@ typedef enum LogSeverity
 	NUM_LOG_SEVERITIES
 } LogSeverity_t;
 
+/**
+ * @brief The module associated with a log message.
+ */
 typedef enum LogModule
 {
 	LOG_MODULE_MAIN,
@@ -36,6 +42,7 @@ typedef enum LogModule
 	LOG_MODULE_SETUP_TEARDOWN,
 	LOG_MODULE_STATE_MACHINE_STATE,
 	LOG_MODULE_STATE_MACHINE_TABLE,
+	LOG_MODULE_POST,
 	LOG_MODULE_TMP102,
 	LOG_MODULE_I2C,
 	NUM_LOG_MODULES
@@ -62,11 +69,17 @@ bool log_enabled();
 
 /**
  * @brief Log_data – display in hexadecimal an address and contents of a memory location,
+ * @param inModule The module associated with this log statement.
+ * @param inFuncName The function name from which we are logging.
+ * @param inSeverity The severity of this log statement.
  * @param inBytes a pointer to a sequence of bytes to log
  * @param inSize Number of bytes to log
  */
 void log_data(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, const uint8_t* inBytes, size_t inSize);
 
+/**
+ * @brief A macro used to wrap a log data. Used to write the function name automatically.
+ */
 #define LOG_DATA(category, severity, data, length) \
 { \
     log_data(category, __FUNCTION__, severity, data, length); \
@@ -74,27 +87,43 @@ void log_data(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeve
 
 
 /**
- * @brief Display a string.
- * @param inString String to display.
+ * @brief Log a string.
+ * @param inModule The module associated with this log statement.
+ * @param inFuncName The function name from which we are logging.
+ * @param inSeverity The severity of this log statement.
+ * @param inString
+ * @param ... Printf style args.
  */
 void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, const char* inString, ...);
 
+/**
+ * @brief A macro used to wrap a log_string. Includes function name automatically and accepts printf-style args.
+ */
 #define LOG_STRING_ARGS(category, severity, fmt, ...) \
 { \
 	log_string(category, __func__, severity, fmt, __VA_ARGS__); \
 }
 
+/**
+ * @brief A macro used to wrap a log_string. Includes function name automatically.
+ */
 #define LOG_STRING(category, severity, fmt) \
 { \
 	log_string(category, __func__, severity, fmt); \
 }
 
 /**
- * @brief Display an integer
- * @param inNum Integer to display.
+ * @brief Logs an integer.
+ * @param inModule The module associated with this log statement.
+ * @param inFuncName The function name from which we are logging.
+ * @param inSeverity The severity of this log statement.
+ * @param inNum Integer to log.
  */
 void log_integer(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, uint64_t inNum);
 
+/**
+ * @brief A wrapper for log integer that include the function name by default.
+ */
 #define LOG_INTEGER(category, severity, num) \
 { \
 	log_integer(category, __func__, severity, num); \
