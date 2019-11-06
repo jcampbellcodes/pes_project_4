@@ -43,7 +43,6 @@ typedef enum {
 struct StateMachine_s
 {
 	State_t state;
-	State_t next_state;
 	int8_t timeout;
 	void (*eventHandler)(struct StateMachine_s*, Event_t);
 };

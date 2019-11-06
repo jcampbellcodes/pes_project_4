@@ -105,6 +105,7 @@ void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSe
 {
 	// TODO: no magic numbers
 	static char format_buf[2048] = {0};
+	for(int i = 0; i < 2048; i++) format_buf[i] = '\0';
 
 	if (sLoggingEnabled && inSeverity >= sLogSeverity) {
 
@@ -123,6 +124,6 @@ void log_integer(LogModule_t inModule, const char* inFuncName, LogSeverity_t inS
 	if (sLoggingEnabled && inSeverity >= sLogSeverity)
 	{
 		PRINT_LOG_PREFIX(inModule, inFuncName, inSeverity)
-		PRINTF("%llu\n\r", inNum);
+		PRINTF("%lld\n\r", inNum);
 	}
 }

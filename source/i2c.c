@@ -20,6 +20,7 @@
 #include "i2c.h"
 #include "MKL25Z4.h"
 #include "logger.h"
+#include "delay.h"
 
 /**
  * @brief Send a start bit using the control register.
@@ -107,7 +108,7 @@ void i2c_init(void)
 	//I2C1->C1 |= I2C_C1_IICEN_MASK | (~I2C_C1_IICIE_MASK);
 	I2C1->C1 |= I2C_C1_IICEN_MASK | (I2C_C1_IICIE_MASK);
 
-	//I2C1->C2 |= (I2C_C2_HDRS_MASK);
+	I2C1->C2 |= (I2C_C2_HDRS_MASK);
 }
 
 void i2c_write_byte(uint8_t dev, uint8_t reg, uint8_t data)
@@ -169,16 +170,16 @@ uint8_t i2c_read_byte(uint8_t dev, uint8_t reg)
 	I2C_M_START; //send start
 	I2C1->D = dev; // send dev address (write)
 	I2C_WAIT
-	if(communicationErrorOccured()){ return; }
+	if(communicationErrorOccured()){ return 0x0; }
 
 	I2C1->D = reg; // send register address
 	I2C_WAIT
-	if(communicationErrorOccured()){ return; }
+	if(communicationErrorOccured()){ return 0x0; }
 
 	I2C_M_RSTART; // repeated start
 	I2C1->D = (dev|0x1); // send dev address (read)
 	I2C_WAIT
-	if(communicationErrorOccured()){ return; }
+	if(communicationErrorOccured()){ return 0x0; }
 
 	I2C_RX; // set to receive mode
 
@@ -212,11 +213,9 @@ void i2c_read_bytes(uint8_t inSlaveAddr, uint8_t inRegAddr, uint8_t* outData, in
 
 	if(communicationErrorOccured()){ return; }
 
-	//uint8_t f_rate = I2C1->F;
 	I2C1->F |= I2C_F_MULT(0);
 	I2C_M_RSTART; //repeated start
 	I2C1->F |= I2C_F_MULT(2);
-	//I2C1->F = f_rate;
 
 	I2C1->D = inSlaveAddr|0x01; //send dev address (read)
 	I2C_WAIT
@@ -256,5 +255,9 @@ bool i2c_connected(uint8_t inSlaveAddr)
 	I2C1->D = inSlaveAddr; // send dev address (write)
 	I2C_WAIT
 
-	return (I2C1->S & I2C_S_RXAK_MASK);
+	bool disconnected = communicationErrorOccured();
+
+	I2C_M_STOP; // send stop
+
+	return !disconnected;
 }

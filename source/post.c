@@ -4,6 +4,7 @@
 #include "MKL25Z4.h"
 #include "tmp102.h"
 
+#include "delay.h"
 
 bool power_on_self_test()
 {
@@ -11,6 +12,15 @@ bool power_on_self_test()
     set_led(1, RED);
     set_led(1, GREEN);
     set_led(1, BLUE);
+
+//    if(tmp102_connected())
+//    {
+//    	while(1)
+//    	{
+//    		delay(1000);
+//    		float temp = readTempC();
+//    	}
+//    }
 
     return tmp102_connected();
 }

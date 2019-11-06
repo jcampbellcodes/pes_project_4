@@ -33,16 +33,23 @@
 #include "tmp102.h"
 #include "delay.h"
 
+
+// Uncomment to use TMP102 rather than the mock.
+//#define USE_TMP102
+
 int main(void) {
 
 	initialize();
-	StateMachine stateMachine = {STATE_TEMP_READING, 0, handle_event_state};
+	StateMachine stateMachine = {STATE_TEMP_READING, 0, &handle_event_state};
 	stateMachine.eventHandler(&stateMachine, EVENT_COMPLETE);
 
 	while(1)
 	{
-		// listen for events
-		if(!tmp102_connected())
+		if(stateMachine.state == STATE_DISCONNECTED)
+		{
+			break;
+		}
+		else if(!tmp102_connected())
 		{
 			stateMachine.eventHandler(&stateMachine, EVENT_DISCONNECT);
 		}

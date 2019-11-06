@@ -15,33 +15,34 @@
 #include "logger.h"
 #include "state_machine.h"
 #include "handle_led.h"
-
+#include "tmp102.h"
+#include <stdlib.h>
+#include "delay.h"
 #define MAX_TIMEOUTS 4
 
 static float sCurrentTempReading = 0.0;
-static float sAverageTempReading = 0.0;
+static float sCumulativeTempReading = 0.0;
 static uint64_t sNumTempReadings = 0;
 
 void read_temp()
 {
 	set_led(1, GREEN);
 	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "Reading TMP102 over I2C" );
+	sNumTempReadings++;
+	sCurrentTempReading = readTempC();
+	delay(1000); // want to reduce the sample rate for temp reads
 }
 
 void average_wait()
 {
-	/*
-	 * use the last temperature reading to update an
-	 * average temperature value.  Normal status
-	 * messages should print the last reading and
-	 * the current average.  You will then wait 15
-	 * seconds for a timeout.
-	 *
-	 * disable all interrupts (alert) whilst in this state
-	 */
 	set_led(1, GREEN);
-	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "Using last read temp to calculate an average." );
-	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "Wait 15 seconds." );
+	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_DEBUG, "Using last read temp to calculate an average." );
+	sCumulativeTempReading += sCurrentTempReading;
+	LOG_STRING_ARGS( LOG_MODULE_STATE_MACHINE_STATE,
+			LOG_SEVERITY_STATUS,
+			"Current temp: { %f }, Average temp: { %f }",
+			sCurrentTempReading,
+			sCumulativeTempReading / sNumTempReadings );
 }
 
 void temp_alert()
@@ -49,6 +50,7 @@ void temp_alert()
 	set_led(1, BLUE);
 	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "ALERT Temp value was negative." );
 	LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "Reading TMP102 over I2C" );
+	read_temp();
 }
 
 void handle_event_state(StateMachine* inState, Event_t inEvent)
@@ -73,6 +75,7 @@ void handle_event_state(StateMachine* inState, Event_t inEvent)
 				case EVENT_DISCONNECT:
 				{
 					inState->state = STATE_DISCONNECTED;
+					goto disconnected_error;
 					break;
 				}
 				default:
@@ -104,6 +107,7 @@ void handle_event_state(StateMachine* inState, Event_t inEvent)
 				case EVENT_DISCONNECT:
 				{
 					inState->state = STATE_DISCONNECTED;
+					goto disconnected_error;
 					break;
 				}
 				default:
@@ -124,6 +128,7 @@ void handle_event_state(StateMachine* inState, Event_t inEvent)
 				case EVENT_DISCONNECT:
 				{
 					inState->state = STATE_DISCONNECTED;
+					goto disconnected_error;
 					break;
 				}
 				default:
@@ -133,13 +138,18 @@ void handle_event_state(StateMachine* inState, Event_t inEvent)
 		}
 		case STATE_DISCONNECTED:
 		{
-			// TODO: Anything? Or can this case be removed?
+			goto disconnected_error;
 			break;
 		}
 		default:
 			inState->state = STATE_TEMP_READING;
 			break;
 	}
+	return;
+
+disconnected_error:
+    LOG_STRING( LOG_MODULE_STATE_MACHINE_STATE, LOG_SEVERITY_STATUS, "Got disconnected event. Exiting." );
+    exit(-1);
 }
 
 void temp_reading_handle_complete(StateMachine* inState)

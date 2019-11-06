@@ -11,5 +11,6 @@ fsl_debug_console.c:474:5:DbgConsole_Getchar	24	static
 fsl_debug_console.c:497:17:DbgConsole_ScanIgnoreWhiteSpace	24	static
 fsl_debug_console.c:521:13:DbgConsole_PrintfPaddingCharacter	32	static
 fsl_debug_console.c:544:16:DbgConsole_ConvertRadixNumToString	56	static
-fsl_debug_console.c:775:12:DbgConsole_PrintfFormattedData	128	static
+fsl_debug_console.c:662:16:DbgConsole_ConvertFloatRadixNumToString	128	static
+fsl_debug_console.c:775:12:DbgConsole_PrintfFormattedData	136	static
 fsl_debug_console.c:1316:12:DbgConsole_ScanfFormattedData	64	static

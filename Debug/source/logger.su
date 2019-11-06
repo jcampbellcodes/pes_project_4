@@ -3,4 +3,4 @@ logger.c:75:6:log_disable	8	static
 logger.c:80:6:log_enabled	8	static
 logger.c:85:6:log_data	40	static
 logger.c:104:6:log_string	28	static
-logger.c:121:6:log_integer	24	static
+logger.c:122:6:log_integer	24	static
