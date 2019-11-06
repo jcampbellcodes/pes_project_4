@@ -23,7 +23,11 @@ These are the steps to build the project in MCUXpresso.
 2) In MCUXpresso, click `New > Project`.
 3) Select `Makefile project with existing code...`
 4) Unselect C++, enter a project name, browse to the directory of the repo, and select `NXP MCU Tools`, then hit next.
-5) Now the project is active in the IDE.
+5) Now set up the configurations. Right click the project,
+6) Hit Properties
+7) Uncheck "Generate makefiles"
+8) Add "Debug" to the build directory path in the same dialog.
+9) Do the same for Normal and Test configurations.
 
 ### Running the FB builds
 
