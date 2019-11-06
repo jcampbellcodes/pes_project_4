@@ -18,7 +18,6 @@
 
 /* GLOBALS */
 const uint64_t CLOCKS_PER_MILLISECOND = 2600UL;
-const uint64_t PRINTF_OFFSET = 900UL;
 
 /**
  * delay
@@ -29,10 +28,6 @@ const uint64_t PRINTF_OFFSET = 900UL;
 void delay(uint64_t inDelayMs)
 {
 	volatile uint64_t number = inDelayMs * CLOCKS_PER_MILLISECOND;
-#ifdef DEBUG
-	PRINTF(" %llu", inDelayMs);
-	number -= PRINTF_OFFSET;
-#endif
 
 	while(number--)
 	{

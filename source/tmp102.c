@@ -19,6 +19,8 @@
 #include "i2c.h"
 #include "tmp102.h"
 
+#define USE_TMP102
+
 /**
  * @brief Base address of the TMP102
  */
@@ -174,6 +176,8 @@ void setAlertMode(bool mode)
 
 	  registerByte &= 0xFD;	// Clear old TM bit (bit 1 of first byte)
 	  registerByte |= mode<<1;	// Shift in new TM bit
+
+	  delay(300); // wait before you read...
 
 	  i2c_write_byte(TMP102_PERIPHERAL_ADDR, CONFIG_REGISTER, registerByte);
 }
