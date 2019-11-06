@@ -13,16 +13,16 @@ bool power_on_self_test()
     set_led(1, GREEN);
     set_led(1, BLUE);
 
-    if(tmp102_connected())
-    {
-    	while(1)
-    	{
-    		delay(300);
-    		float temp = readTempC();
-    		delay(300);
-    		setAlertMode(0);
-    	}
-    }
+//    if(tmp102_connected())
+//    {
+//    	while(1)
+//    	{
+//    		delay(300);
+//    		float temp = readTempC();
+//    		delay(300);
+//    		setAlertMode(0);
+//    	}
+//    }
 
     return tmp102_connected();
 }
