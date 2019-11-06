@@ -21,28 +21,6 @@
 #include "MKL25Z4.h"
 #include "logger.h"
 
-static bool communicationErrorOccured()
-{
-	// check if arbitration was lost
-	if((I2C1->S & I2C_S_ARBL_MASK))
-	{
-		LOG_STRING(LOG_MODULE_I2C,
-				LOG_SEVERITY_STATUS,
-				"Arbitration lost. Aborting read.");
-		I2C1->S |= I2C_S_ARBL_MASK;
-		return true;
-	}
-
-	if(!(I2C1->S & I2C_S_RXAK_MASK))
-	{
-		LOG_STRING(LOG_MODULE_I2C,
-				LOG_SEVERITY_STATUS,
-				"No ACK received. Aborting read.");
-		return true;
-	}
-	return false;
-}
-
 /**
  * @brief Send a start bit using the control register.
  */
@@ -84,6 +62,31 @@ static bool communicationErrorOccured()
  */
 #define ACK I2C1->C1 &= ~I2C_C1_TXAK_MASK
 
+
+static bool communicationErrorOccured()
+{
+	// check if arbitration was lost
+	if((I2C1->S & I2C_S_ARBL_MASK))
+	{
+		LOG_STRING(LOG_MODULE_I2C,
+				LOG_SEVERITY_STATUS,
+				"Arbitration lost. Aborting read.");
+		I2C1->S |= I2C_S_ARBL_MASK;
+		I2C_M_STOP; //send stop
+		return true;
+	}
+
+	if(!(I2C1->S & I2C_S_RXAK_MASK))
+	{
+		LOG_STRING(LOG_MODULE_I2C,
+				LOG_SEVERITY_STATUS,
+				"No ACK received. Aborting read.");
+		I2C_M_STOP; //send stop
+		return true;
+	}
+	return false;
+}
+
 void i2c_init(void)
 {
 	/* Enable clock for I2C1 module */
@@ -98,7 +101,7 @@ void i2c_init(void)
 
 	/* Configure Divider Register */
 	//I2C1->F |= (I2C_F_MULT(2) | I2C_F_ICR(22));
-	I2C1->F |= I2C_F_ICR(0x2E) | I2C_F_MULT(0);
+	I2C1->F |= I2C_F_ICR(0x31) | I2C_F_MULT(2);
 
 	/* Enable I2C module and interrupt */
 	//I2C1->C1 |= I2C_C1_IICEN_MASK | (~I2C_C1_IICIE_MASK);
@@ -210,8 +213,9 @@ void i2c_read_bytes(uint8_t inSlaveAddr, uint8_t inRegAddr, uint8_t* outData, in
 	if(communicationErrorOccured()){ return; }
 
 	//uint8_t f_rate = I2C1->F;
-	//I2C1->F = 0;
+	I2C1->F |= I2C_F_MULT(0);
 	I2C_M_RSTART; //repeated start
+	I2C1->F |= I2C_F_MULT(2);
 	//I2C1->F = f_rate;
 
 	I2C1->D = inSlaveAddr|0x01; //send dev address (read)
@@ -229,8 +233,6 @@ void i2c_read_bytes(uint8_t inSlaveAddr, uint8_t inRegAddr, uint8_t* outData, in
 	ACK; // tell hardware to send ack after read
 	dummy = I2C1->D; // dummy read to start I2C read
 	I2C_WAIT
-
-	if(communicationErrorOccured()){ return; }
 
 	do {
 		ACK;

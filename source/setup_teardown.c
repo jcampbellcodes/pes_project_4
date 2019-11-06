@@ -50,7 +50,7 @@ void initialize()
 	i2c_init();
 
 	if(!power_on_self_test())
-		exit(1);
+		exit(-1);
 }
 
 /**

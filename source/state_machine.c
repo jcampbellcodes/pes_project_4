@@ -18,6 +18,10 @@
 
 #define MAX_TIMEOUTS 4
 
+static float sCurrentTempReading = 0.0;
+static float sAverageTempReading = 0.0;
+static uint64_t sNumTempReadings = 0;
+
 void read_temp()
 {
 	set_led(1, GREEN);

@@ -30,6 +30,8 @@
 #include "logger.h"
 #include "state_machine.h"
 #include "post.h"
+#include "tmp102.h"
+#include "delay.h"
 
 int main(void) {
 
@@ -40,10 +42,23 @@ int main(void) {
 	while(1)
 	{
 		// listen for events
-
-		// check for timeout
-		// checkout for disconnected
-		// check for alert
+		if(!tmp102_connected())
+		{
+			stateMachine.eventHandler(&stateMachine, EVENT_DISCONNECT);
+		}
+		else if(alert())
+		{
+			stateMachine.eventHandler(&stateMachine, EVENT_ALERT);
+		}
+		else if(stateMachine.state == STATE_TEMP_READING)
+		{
+			stateMachine.eventHandler(&stateMachine, EVENT_COMPLETE);
+		}
+		else
+		{
+			delay(2000);
+			stateMachine.eventHandler(&stateMachine, EVENT_TIMEOUT);
+		}
 	}
 
     return 0 ;

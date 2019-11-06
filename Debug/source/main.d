@@ -8,7 +8,8 @@ source/main.o source/main.d: ../source/main.c ../board/board.h \
  ../board/pin_mux.h ../board/clock_config.h ../CMSIS/MKL25Z4.h \
  ../utilities/fsl_debug_console.h ../include/handle_led.h \
  ../include/led_types.h ../include/setup_teardown.h ../include/logger.h \
- ../include/state_machine.h ../include/post.h
+ ../include/state_machine.h ../include/post.h ../include/tmp102.h \
+ ../include/delay.h
 
 ../board/board.h:
 
@@ -59,3 +60,7 @@ source/main.o source/main.d: ../source/main.c ../board/board.h \
 ../include/state_machine.h:
 
 ../include/post.h:
+
+../include/tmp102.h:
+
+../include/delay.h:
