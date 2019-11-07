@@ -23,14 +23,12 @@
 
 void initialize()
 {
-
   	/* Init board hardware. */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitBootPeripherals();
 
 #ifdef DEBUG
-	/* serial debug console setup: use PRINTF("debug msg"); */
 	BOARD_InitDebugConsole();
 	log_enable(LOG_SEVERITY_TEST);
 	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "program start");

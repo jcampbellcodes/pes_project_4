@@ -15,6 +15,35 @@ statement levels.
 The state machine uses a strategy pattern to ping-pong its event handler between a table based and
 a state-based state machine.
 
+## Observations
+
+I spent the bulk of my time on the front end of this project working on designing the state machine and
+logging infrastructure, which ended up being potentially a bad call -- I saved the I2C and TMP102 work 
+for the weekend before it was due, and had a lot of trouble debugging that communication.
+
+I also spent most of the weekend learning how to use an oscilloscope and how to pick a header pin configuration
+to solder to my board, which was a good experience, but pushed my I2C troubles even closer to the deadline.
+
+In the future I think I will consider my "unbounded work" anything hardware related and try to get it handled first.
+Writing and designing pure software is more bounded and can be crammed into the end of a schedule easier than
+something I have much less experience with.
+
+
+I've still attached my logic analyzer diagrams, since I believe the I2C transactions were 
+*not* malformed... I point out in the diagrams everywhere where there *should* be a TMP102 ACK, but 
+none arrives. However, these graphs show that the master  is doing what it is supposed to be doing. 
+According to several students and Shreya, my init code and I2C code is doing the same thing as others who have
+a working solution...
+
+I spent a fair amount of time debugging with Shreya (five hours) and tried three different TMP102's and 4 different KL25Z's.
+I even tried running Shreya's working I2C code and it wasn't working when run under my setup. So something is wrong in my
+setup, probably something simple and dumb, but in the end I decided it was beyond my dedication to get it actually working.
+
+
+To show off the state machine logic, I added a define in tmp102.c called USE_TMP102. If this is not defined, then I 
+have stub functions that return "meaningful" values so I can demonstrate the sequence of the state machine.
+
+
 ## Installation/Execution Notes
 
 These are the steps to build the project in MCUXpresso.
@@ -39,17 +68,4 @@ These are the steps to build the project in MCUXpresso.
 6) Hit Apply
 7) Hit Debug
 8) The program should run in the console below, provided the board is connected successfully.
-
-## Observations
-
-I spent the bulk of my time on the front end of this project working on designing the state machine and
-logging infrastructure, which ended up being potentially a bad call -- I saved the I2C and TMP102 work 
-for the weekend before it was due, and had a lot of trouble debugging that communication.
-
-I also spent most of the weekend learning how to use an oscilloscope and how to pick a header pin configuration
-to solder to my board, which was a good experience, but pushed my I2C troubles even closer to the deadline.
-
-In the future I think I will consider my "unbounded work" anything hardware related and try to get it handled first.
-Writing and designing pure software is more bounded and can be crammed into the end of a schedule easier than
-something I have much less experience with.
 

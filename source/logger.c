@@ -25,6 +25,11 @@
 #include "fsl_debug_console.h"
 
 /**
+ * Used as a size for static char arrays.
+ */
+#define ARRLEN 2048
+
+/**
  * @brief Used to standardize the prefix before log messages.
  */
 #define PRINT_LOG_PREFIX(module, func, severity)\
@@ -103,8 +108,7 @@ void log_data(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeve
 
 void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, const char* inString, ...)
 {
-	// TODO: no magic numbers
-	static char format_buf[2048] = {0};
+	static char format_buf[ARRLEN] = {0};
 	for(int i = 0; i < 2048; i++) format_buf[i] = '\0';
 
 	if (sLoggingEnabled && inSeverity >= sLogSeverity) {

@@ -12,11 +12,6 @@
  *         ARM Linker: GNU ld 2.31.51.20181213
  *         ARM Debugger: GNU gdb 8.2.50.20181213-git
  */
- 
-/**
- * @file    pesproject4.c
- * @brief   Application entry point.
- */
 #include <stdio.h>
 #include "board.h"
 #include "peripherals.h"
@@ -32,10 +27,6 @@
 #include "post.h"
 #include "tmp102.h"
 #include "delay.h"
-
-
-// Uncomment to use TMP102 rather than the mock.
-//#define USE_TMP102
 
 int main(void) {
 

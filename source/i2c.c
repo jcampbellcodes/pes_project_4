@@ -63,7 +63,9 @@
  */
 #define ACK I2C1->C1 &= ~I2C_C1_TXAK_MASK
 
-
+/**
+ * Checks for arbitration lost or no ACK received from device.
+ */
 static bool communicationErrorOccured()
 {
 	// check if arbitration was lost
@@ -101,14 +103,10 @@ void i2c_init(void)
 	PORTE->PCR[25] |=  PORT_PCR_MUX(5);
 
 	/* Configure Divider Register */
-	//I2C1->F |= (I2C_F_MULT(2) | I2C_F_ICR(22));
-	I2C1->F |= I2C_F_ICR(0x31) | I2C_F_MULT(2);
+	I2C1->F |= I2C_F_ICR(0x11) | I2C_F_MULT(0);
 
 	/* Enable I2C module and interrupt */
-	//I2C1->C1 |= I2C_C1_IICEN_MASK | (~I2C_C1_IICIE_MASK);
-	I2C1->C1 |= I2C_C1_IICEN_MASK | (I2C_C1_IICIE_MASK);
-
-	I2C1->C2 |= (I2C_C2_HDRS_MASK);
+	I2C1->C1 |= I2C_C1_IICEN_MASK;
 }
 
 void i2c_write_byte(uint8_t dev, uint8_t reg, uint8_t data)
@@ -137,7 +135,6 @@ void i2c_write_byte(uint8_t dev, uint8_t reg, uint8_t data)
 
 void i2c_write_bytes(uint8_t inSlaveAddr, uint8_t inRegAddr, uint8_t* inData, int8_t inDataSize)
 {
-	uint8_t dummy;
 	int8_t num_bytes_written = 0;
 	I2C_TX; //set to transmit mode
 	I2C_M_START; //send start
@@ -195,9 +192,6 @@ uint8_t i2c_read_byte(uint8_t dev, uint8_t reg)
 
 void i2c_read_bytes(uint8_t inSlaveAddr, uint8_t inRegAddr, uint8_t* outData, int8_t outDataSize)
 {
-	uint8_t dummy;
-	int8_t num_bytes_read = 0;
-
 	// poll until not busy
 	while((I2C1->S & I2C_S_BUSY_MASK)!=0) {}
 
@@ -213,9 +207,7 @@ void i2c_read_bytes(uint8_t inSlaveAddr, uint8_t inRegAddr, uint8_t* outData, in
 
 	if(communicationErrorOccured()){ return; }
 
-	I2C1->F |= I2C_F_MULT(0);
 	I2C_M_RSTART; //repeated start
-	I2C1->F |= I2C_F_MULT(2);
 
 	I2C1->D = inSlaveAddr|0x01; //send dev address (read)
 	I2C_WAIT
@@ -230,17 +222,15 @@ void i2c_read_bytes(uint8_t inSlaveAddr, uint8_t inRegAddr, uint8_t* outData, in
 
 	I2C_RX; //set to receive mode
 	ACK; // tell hardware to send ack after read
-	dummy = I2C1->D; // dummy read to start I2C read
+	outData[0] = I2C1->D; // dummy read to start I2C read
 	I2C_WAIT
 
-	do {
-		ACK;
-		outData[num_bytes_read++] = I2C1->D;
-		I2C_WAIT
-	} while (num_bytes_read < outDataSize-2);
+	ACK;
+	outData[0] = I2C1->D;
+	I2C_WAIT
 
 	NACK; // to HW to send nack after read
-	outData[num_bytes_read++] = I2C1->D; // read data
+	outData[1] = I2C1->D; // read data
 	I2C_WAIT
 
 	if(communicationErrorOccured()){ return; }
@@ -261,3 +251,4 @@ bool i2c_connected(uint8_t inSlaveAddr)
 
 	return !disconnected;
 }
+

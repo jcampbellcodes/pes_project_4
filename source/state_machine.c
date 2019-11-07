@@ -10,6 +10,9 @@
  *         ARM Compiler: GNU gcc version 8.2.1 20181213
  *         ARM Linker: GNU ld 2.31.51.20181213
  *         ARM Debugger: GNU gdb 8.2.50.20181213-git
+ *
+ *  Leveraged code: Table based state machine was inspired by
+ *  https://yakking.branchable.com/posts/state-machines-in-c/table.c
  */
 
 #include "logger.h"
@@ -18,6 +21,30 @@
 #include "tmp102.h"
 #include <stdlib.h>
 #include "delay.h"
+
+
+/**
+ * @brief Strings for states.
+ */
+static const char* sStateStrings[STATE_NUM_STATES] =
+{
+	"STATE_TEMP_READING",
+	"STATE_AVERAGE_WAIT",
+	"STATE_TEMP_ALERT",
+	"STATE_DISCONNECTED"
+};
+
+/**
+ * @brief Strings for events.
+ */
+static const char* sEventStrings[EVENT_NUM_EVENTS] =
+{
+	"EVENT_TIMEOUT",
+	"EVENT_COMPLETE",
+	"EVENT_ALERT",
+	"EVENT_DISCONNECT"
+};
+
 #define MAX_TIMEOUTS 4
 
 static float sCurrentTempReading = 0.0;
@@ -145,6 +172,13 @@ void handle_event_state(StateMachine* inState, Event_t inEvent)
 			inState->state = STATE_TEMP_READING;
 			break;
 	}
+
+	LOG_STRING_ARGS(LOG_MODULE_STATE_MACHINE_STATE,
+					LOG_SEVERITY_DEBUG,
+					"Handling [%s] event. New state is [%s].",
+					sEventStrings[inEvent],
+					sStateStrings[inState->state]);
+
 	return;
 
 disconnected_error:
@@ -205,11 +239,9 @@ void avg_wait_handle_disconnect(StateMachine* inState)
 	inState->state = STATE_DISCONNECTED;
 }
 
-
 // make a table of state handlers, mapped to events x states
 typedef void (*transition_handler)(StateMachine*);
 
-// https://yakking.branchable.com/posts/state-machines-in-c/table.c
 transition_handler transitions[STATE_NUM_STATES][EVENT_NUM_EVENTS] =
 {    /* Timeout */                   /* Complete */                    /* Alert */                    /* Disconnect*/
 	{   NULL,                    temp_reading_handle_complete, temp_reading_handle_alert, temp_reading_handle_disconnect    }, /* Temp Reading */
@@ -224,10 +256,14 @@ void handle_event_table(StateMachine* inState, Event_t inEvent)
 	if (handler)
 	{
 		handler(inState);
+		LOG_STRING_ARGS(LOG_MODULE_STATE_MACHINE_TABLE,
+						LOG_SEVERITY_DEBUG,
+						"Handling [%s] event. New state is [%s].",
+						sEventStrings[inEvent],
+						sStateStrings[inState->state]);
 	}
 	else
 	{
-		LOG_STRING( LOG_MODULE_STATE_MACHINE_TABLE, LOG_SEVERITY_STATUS, "State transition NULL, exiting program." );
-		// TODO: Exit?
+		LOG_STRING( LOG_MODULE_STATE_MACHINE_TABLE, LOG_SEVERITY_STATUS, "State transition NULL." );
 	}
 }
