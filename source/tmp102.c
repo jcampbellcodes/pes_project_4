@@ -118,11 +118,11 @@ float readHighTempC()
 // - Returns the state of the Alert register. The state of the register is the same as the ALT pin.
 bool alert()
 {
-//	  // Change pointer address to configuration register (1)
-//	  uint8_t registerByte = i2c_read_byte(TMP102_PERIPHERAL_ADDR, CONFIG_REGISTER);
-//
-//	  registerByte &= 0x20;	// Clear everything but the alert bit (bit 5)
-//	  return registerByte>>5;
+      // Change pointer address to configuration register (1)
+      uint8_t registerByte = i2c_read_byte(TMP102_PERIPHERAL_ADDR, CONFIG_REGISTER);
+
+      registerByte &= 0x20;    // Clear everything but the alert bit (bit 5)
+      return registerByte>>5;
 }
 
 // - Sets T_LOW (in Celsius) alert threshold.
